@@ -1,0 +1,5 @@
+# filled in by the deployment (and by hand for a local test): never committed
+release/*.nro
+release/LICENSES.txt
+release/street-settings.toml
+_localtest/

@@ -1,0 +1,51 @@
+# Phase 2 route: the same presses and captures on STREET-d3d12.exe and STREET-vk.exe (STREET_PAD_SCRIPT).
+# No profile is made (No in the dialog), so nothing is saved.
+WAIT 12
+SHOT
+# intro video skipped -> legal screen
+START
+WAIT 4
+SHOT
+# -> profile dialog
+START
+WAIT 5
+SHOT
+# No -> main menu
+DOWN
+A
+WAIT 3
+SHOT
+# Play Now -> team select
+A
+WAIT 4
+SHOT
+# team -> uniform
+A
+WAIT 3
+SHOT
+A
+WAIT 3
+SHOT
+# -> loading screen
+A
+WAIT 3
+SHOT
+# stadium flyover, then the first plays
+WAIT 15
+SHOT
+WAIT 6
+SHOT
+A
+WAIT 4
+SHOT
+A
+WAIT 4
+SHOT
+WAIT 10
+SHOT
+A
+WAIT 10
+SHOT
+A
+WAIT 10
+SHOT

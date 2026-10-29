@@ -1,0 +1,3 @@
+SMAA 2.8 (Jorge Jimenez et al.), MIT: https://github.com/iryoku/smaa at 71c806a838bdd7d517df19192a20f0c61b3ca29d
+(2013-11-06). SMAA.hlsl, Textures/AreaTex.h and Textures/SearchTex.h unchanged; SMAA.hlsl.inc is SMAA.hlsl as a C++
+raw string (non-ASCII bytes dropped), made by tools/smaa_inc.py.

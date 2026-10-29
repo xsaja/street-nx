@@ -1,0 +1,1 @@
+SPIRV-Cross (KhronosGroup), tag vulkan-sdk-1.4.363.0 (commit f11ba9f), only the core and the GLSL backend. Apache-2.0 (LICENSE).

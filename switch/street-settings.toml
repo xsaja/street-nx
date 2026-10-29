@@ -1,0 +1,83 @@
+# FIFA Street for Switch - settings (this file goes next to street.nro, in sdmc:/switch/street-nx/)
+# If you delete it, the game uses these same defaults.
+# The Switch has no display_mode, width or height: the resolution is the screen's
+# (1280x720 handheld, 1920x1080 docked).
+
+# Internal resolution in % of the screen's height (100 = native). Lower it (75, say) if the game is slow.
+render_percent = 100
+
+# Frame rate cap (0 = none). 60 by default: FIFA Street holds 60 fps in matches, handheld and docked.
+# The log writes the real frame rate every 10 s ("perf:" lines).
+fps_cap = 60
+
+# Renderer: "deko3d" (the default: the Switch's own graphics API, the fastest; on the first launch it compiles its
+# shaders, a few seconds) or "vulkan" (NVK, slower). If something looks wrong, try "vulkan".
+renderer = "deko3d"
+
+# deko3d only: true adds SMAA anti-aliasing over each frame (slightly smoother edges). It costs about 5 ms of GPU
+# a frame in handheld; docked it may drop frames. Off by default.
+smaa = false
+
+# deko3d only: true (default) writes each draw's data to CPU-cached memory (faster).
+# If you see broken shapes or flickering with deko3d, try false.
+deko3d_cached_upload = true
+
+# deko3d only: a texture the game may have changed is checked in full once every this many frames (8 by default;
+# 1 = every frame). If a texture is slow to update (scoreboard, signs), try 1.
+texture_check_frames = 8
+
+# true (default): only the render states the game changed since the last draw are sent to the renderer
+# (less CPU work). If colors, transparency or positions look wrong, try false.
+state_tracking = true
+
+# For development: true records every millisecond which function the game is running, into logs/prof.bin.
+# It costs some performance: leave it false to play.
+profile = false
+
+# "vsync" (default): with vsync on and fps_cap 60, the screen paces the game (smoother: a slow frame now and then is
+# hidden by the frames already queued). "timer": the game also waits on its own 60 Hz clock (the older builds).
+frame_pacing = "vsync"
+
+# Vertical sync (no tearing).
+vsync = true
+
+# false (default for FIFA Street, the tested setup): a stock 480 Xbox. true: the game believes the TV is a 720p HDTV.
+xbox_720p = false
+
+# The console language the game starts in (as the Xbox dashboard's): "auto" follows the Switch's system language;
+# or "en", "es", "fr", "de", "it", "pt", "ja", "ko", "zh" (the game itself may only have some of them).
+language = "auto"
+
+# Anisotropic filtering: 2 (default) keeps the ground sharp further away at almost no cost; 4, 8 or 16 sharper
+# still; 0 = only what the game asks for.
+anisotropic_filtering = 2
+
+# A/B/X/Y: false (default) = by position, as on an Xbox controller: bottom B = Xbox A, right A = Xbox B,
+# left Y = Xbox X, top X = Xbox Y (the button the game shows sits where you press). true = by letter (A = Xbox A).
+# L and R are the Xbox L and R triggers; ZL and ZR are the Xbox controller's white and black buttons.
+buttons_by_name = false
+
+# Clocks in MHz (0 = the console's own, untouched). Applied at start and when docking or undocking, and the console's
+# are restored on exit. Caps: CPU 1785, GPU 921, memory 1600 (the official maximums).
+# Stock: CPU 1020; GPU 307-460 handheld and 768 docked; memory 1331 handheld and 1600 docked.
+# Higher clocks use more battery and run hotter. FIFA Street does not need them.
+# If you use Horizon OC or sys-clk, leave these at 0 and set the clocks in its profile for this game.
+cpu_mhz = 0
+gpu_mhz = 0
+mem_mhz = 0
+
+# Performance: true (default) = the game copies each draw's vertices as it makes the draw and does not wait
+# for the render thread. false = it waits on every draw (slower).
+draw_copy = true
+
+# Performance: true (default) = a draw with the same constants as the previous one reuses them instead of
+# uploading them again. false = always upload them.
+reuse_constants = true
+
+# Performance (experimental): microseconds the game thread and the render thread wait awake before sleeping.
+# 0 = sleep at once. Hardly needed with draw_copy = true.
+render_spin_us = 0
+
+# true (default): shows the FPS and the resolution in Status Monitor Overlay / Horizon OC Monitor, and follows the
+# handheld/docked mode picked in ReverseNX-RT. Needs SaltyNX 0.7.0 or later; without SaltyNX it does nothing.
+saltynx = true

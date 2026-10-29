@@ -1,0 +1,155 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>FIFA Street — Switch installer</title>
+  <link rel="icon" type="image/png" href="favicon.png">
+  <meta name="description" content="Builds the Nintendo Switch package of FIFA Street from your own Xbox copy, in your browser.">
+  <meta name="theme-color" content="#15171c">
+  <!-- Layout and flow adapted from defjam-sw-installer (R-drg), itself from the-simpsons-game-nx-installer and
+       nfsmw-nx-installer by StevensND (GPL-3.0). -->
+  <style>
+    :root { --bg: #15171c; --panel: rgba(28, 31, 38, .88); --inset: rgba(12, 13, 17, .9); --text: #f5f1e6;
+      --muted: #b9bcc4; --red: #ef7a1a; --red-hover: #ff9033; --on-accent: #fff; --cream: #fae678;
+      --good: #57c27e; --bad: #ff6b63; --link: #ffad5c;
+      --line: rgba(255, 255, 255, .12); --gap: clamp(8px, 1.1vh, 14px); --pad: clamp(10px, 1.5vh, 18px);
+      --display: "Arial Black", "Helvetica Neue", Impact, ui-sans-serif, system-ui, sans-serif; }
+    * { box-sizing: border-box; }
+    [hidden] { display: none !important; }
+    html { background: var(--bg); }
+    body { margin: 0; min-height: 100vh; color: var(--text); background: transparent;
+      font: clamp(15px, 1.7vh, 16px)/1.5 ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+    /* the street art across the top, fading into the asphalt below */
+    body::before { content: ""; position: fixed; inset: 0; z-index: -2;
+      background: linear-gradient(180deg, rgba(21, 23, 28, .35) 0%, rgba(21, 23, 28, .75) 30vw, var(--bg) 46vw),
+        url(cover.jpg) center top / 100% auto no-repeat, var(--bg); }
+    /* a painted stripe along the top */
+    body::after { content: ""; position: fixed; left: 0; right: 0; top: 0; height: 6px; z-index: -1; pointer-events: none;
+      background: linear-gradient(90deg, var(--red), var(--cream)); opacity: .9; }
+    main { width: 100%; max-width: 900px; margin: 0 auto; padding: clamp(16px, 3vh, 36px) 16px;
+      display: flex; flex-direction: column; gap: calc(var(--gap) * 1.4); }
+    .languages { display: flex; justify-content: center; gap: 8px; }
+    .languages button { background: transparent; border: 1px solid var(--line); color: var(--muted); border-radius: 4px;
+      padding: 3px 10px; font-family: inherit; font-size: 13px; font-weight: 700; line-height: 1.4; cursor: pointer; margin: 0;
+      box-shadow: none; text-transform: none; }
+    .languages button[aria-pressed="true"] { color: #fff; border-color: var(--red); background: rgba(239, 122, 26, .3); }
+    .languages button:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
+    .title { text-align: center; margin: calc(var(--gap) * 1.4) 0 0; font-family: var(--display); line-height: 1; }
+    .title img { display: block; margin: 0 auto; width: min(420px, 80vw); height: auto;
+      filter: drop-shadow(0 6px 14px rgba(0, 0, 0, .85)); }
+    h1 { font-family: var(--display); font-weight: 900; text-align: center; font-size: clamp(1.1rem, 3.6vw, 1.6rem);
+      line-height: 1.2; margin: calc(var(--gap) * .8) 0 0; text-wrap: balance; text-transform: uppercase; letter-spacing: .04em; }
+    h1 .tag { display: inline-block; background: var(--red); color: var(--on-accent); padding: .12em .45em;
+      border-radius: 3px; box-shadow: 3px 3px 0 rgba(0, 0, 0, .5); }
+    p.lead { color: #e9e5da; text-align: center; margin: var(--gap) auto 0; max-width: 720px; text-wrap: balance;
+      text-shadow: 0 1px 10px rgba(0, 0, 0, .9); }
+    p.lead strong { white-space: nowrap; }
+    section { position: relative; background: var(--panel); border: 1px solid var(--line); border-left: 5px solid var(--red);
+      border-radius: 4px; padding: var(--pad) calc(var(--pad) + 4px); box-shadow: 0 12px 32px rgba(0, 0, 0, .45);
+      -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px); }
+    h2 { font-family: var(--display); font-weight: 900; font-size: 1.15em; margin: 0 0 calc(var(--pad) * .5);
+      color: var(--cream); letter-spacing: .04em; text-transform: uppercase; }
+    button, label.button { display: inline-block; background: var(--red); color: var(--on-accent); border: 0; border-radius: 4px;
+      padding: .55em 1.1em; font-family: inherit; font-size: 1em; font-weight: 800; line-height: 1.3; cursor: pointer;
+      margin: 4px 8px 4px 0; transition: background .12s, transform .12s; text-transform: uppercase; letter-spacing: .03em;
+      box-shadow: 3px 3px 0 rgba(0, 0, 0, .5); }
+    button:not(:disabled):hover, label.button:hover { background: var(--red-hover); transform: translate(-1px, -1px); }
+    button:focus-visible, label.button:focus-within { outline: 2px solid #fff; outline-offset: 2px; }
+    button:disabled { background: #33363e; color: #868a94; cursor: default; box-shadow: none; }
+    input[type=file] { position: absolute; opacity: 0; width: 1px; height: 1px; }
+    .hint { margin: calc(var(--pad) * .5) 0 0; }
+    .chosen { color: var(--muted); margin-top: calc(var(--pad) * .35); word-break: break-all; }
+    .choices { display: grid; justify-items: start; row-gap: calc(var(--pad) * .4); }
+    .choices button { margin: 0; }
+    .choices button + .flow { margin-top: calc(var(--pad) * .7); }
+    .flow { margin: 0; font-weight: 700; }
+    .detected { margin-top: calc(var(--pad) * .7); background: var(--inset); border: 1px solid var(--line); border-radius: 4px;
+      padding: 10px 16px; }
+    .detected.good { border-color: var(--good); }
+    .detected.bad { border-color: var(--bad); }
+    .detected .title { font-size: 1.15rem; font-weight: 800; text-align: left; margin: 0; font-family: inherit; }
+    .detected .state { color: var(--muted); }
+    .detected .state.good { color: var(--good); }
+    .detected .state.bad { color: var(--bad); }
+    .fingerprint { font: 12px ui-monospace, monospace; word-break: break-all; user-select: all; margin-top: 4px; }
+    progress { width: 100%; height: 12px; margin-top: calc(var(--pad) * .7); accent-color: var(--red); }
+    #log { font: 13px/1.45 ui-monospace, monospace; color: var(--muted); white-space: pre-wrap; max-height: 96px; overflow: auto;
+      margin: 8px 0 0; }
+    .error { color: var(--bad); }
+    ol { margin: 0; padding-left: 20px; }
+    li + li { margin-top: 4px; }
+    code { background: rgba(0, 0, 0, .45); border: 1px solid var(--line); padding: 1px 5px; border-radius: 3px; color: #fff; font-weight: 700; }
+    a { color: var(--link); font-weight: 700; text-underline-offset: 2px; }
+    a:hover { color: #ffd08f; }
+    footer { display: flex; flex-direction: column; gap: var(--gap); text-align: center; }
+    .source { margin: 0; font-weight: 800; }
+    .source a { text-decoration: none; margin: 0 10px; text-transform: uppercase; letter-spacing: .04em; }
+    .source a:hover, .source a:focus-visible { text-decoration: underline; }
+    .credits, .legal { margin: 0; font-size: clamp(12px, 1.35vh, 13.5px); line-height: 1.5; text-wrap: pretty; }
+    .credits { color: #dcdfe6; }
+    .legal { color: #bcc0c8; background: rgba(12, 13, 17, .82); border: 1px solid var(--line); border-radius: 4px; padding: 10px 16px; }
+    @media (max-width: 700px) {
+      /* on a phone the art is taller than wide: fill the top */
+      body::before { background: linear-gradient(180deg, rgba(21, 23, 28, .45) 0%, var(--bg) 60vw),
+        url(cover.jpg) center top / auto 60vw no-repeat, var(--bg); }
+    }
+  </style>
+</head>
+<body>
+<main>
+  <header>
+    <nav class="languages" id="languages" aria-label="Language"></nav>
+    <p class="title"><img src="logo.png" alt="FIFA Street" width="500" height="162"></p>
+    <h1><span class="tag">Nintendo Switch</span> <span data-i18n="installer">installer</span></h1>
+    <p class="lead" data-i18n-html="lead"></p>
+  </header>
+
+  <section>
+    <h2 data-i18n="step1"></h2>
+    <label class="button" for="iso" data-i18n="formatIso"></label>
+    <label class="button" for="folder" data-i18n="formatFolder"></label>
+    <input id="iso" type="file" accept=".iso,.xiso">
+    <input id="folder" type="file" webkitdirectory>
+    <p class="hint" data-i18n-html="formatHint"></p>
+    <div class="chosen" id="chosen"></div>
+  </section>
+
+  <section>
+    <h2 data-i18n="step2"></h2>
+    <div class="choices">
+      <p class="flow" data-i18n-html="step2First"></p>
+      <button id="create" disabled data-i18n="create"></button>
+      <p class="flow" data-i18n-html="step2Update"></p>
+      <button id="update" disabled data-i18n="createUpdate"></button>
+    </div>
+    <div class="detected" id="detected" hidden>
+      <div class="title" id="detectedTitle"></div>
+      <div class="state" id="detectedState"></div>
+      <div class="fingerprint" id="fingerprint" hidden></div>
+    </div>
+    <progress id="bar" max="1" value="0" hidden></progress>
+    <div id="log" aria-live="polite"></div>
+  </section>
+
+  <section>
+    <h2 data-i18n="step3"></h2>
+    <ol>
+      <li data-i18n-html="step3Extract"></li>
+      <li data-i18n-html="step3Start"></li>
+    </ol>
+  </section>
+
+  <footer>
+    <p class="source">
+      <a href="https://github.com/xsaja/street-nx" target="_blank" rel="noopener" data-i18n="sourceCode"></a>
+      <a href="https://github.com/xsaja/street-nx/releases" target="_blank" rel="noopener">Releases</a>
+      <a href="https://github.com/xsaja/street-nx/tree/main/installer" target="_blank" rel="noopener" data-i18n="installerSource"></a>
+    </p>
+    <p class="credits" data-i18n-html="credits"></p>
+    <p class="legal" data-i18n="legal"></p>
+  </footer>
+</main>
+<script type="module" src="./app.js"></script>
+</body>
+</html>

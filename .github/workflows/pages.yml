@@ -1,0 +1,70 @@
+name: Publish the installer
+
+# Publishes installer/ on GitHub Pages (https://xsaja.github.io/street-nx/). Adapted from defjam-sw-installer's
+# deploy.yml (R-drg), itself from nfsmw-nx-installer by StevensND (GPL-3.0).
+# The NRO is not in the repository: it is the street.nro asset of a release of this repository. Each deployment
+# downloads it, checks it against installer/release/manifest.json and publishes the page with it, with the settings
+# file and LICENSES.txt from the repository. Run it by hand (Actions > Publish the installer > Run workflow) after
+# publishing a new release.
+
+on:
+  push:
+    branches: [main]
+    paths: ['installer/**', 'LICENSES.txt', 'switch/street-settings.toml', '.github/workflows/pages.yml']
+  release:
+    types: [published]
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: Release to take the NRO from (empty for the latest)
+        required: false
+        default: ''
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    defaults:
+      run:
+        working-directory: installer
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Test the package code
+        run: node test/package_node.mjs
+
+      - name: Download the NRO of the release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: ${{ inputs.tag || github.event.release.tag_name }}
+        run: gh release download $TAG --repo ${{ github.repository }} --pattern 'street.nro' --dir release --clobber
+
+      - name: Check it against the list of builds
+        run: node test/verify_release.mjs
+
+      - name: Assemble the site
+        run: |
+          cp ../LICENSES.txt release/
+          cp ../switch/street-settings.toml release/
+          mkdir ../_site
+          cp -r index.html app.js worker.js sw.js cover.jpg favicon.png logo.png lib release ../_site/
+
+      - uses: actions/configure-pages@v5
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+
+      - id: deployment
+        uses: actions/deploy-pages@v4

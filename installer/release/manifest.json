@@ -1,0 +1,13 @@
+{
+  "version": "0.1.0",
+  "builds": [
+    {
+      "edition": "NTSC-U (title ID 45410072)",
+      "xbe_sha256": "f43dcca6fbd99e7a04dc94992443b368eefaa9d6bbc88432bf43b2d90e115ef1",
+      "xbe_size": 2985984,
+      "nro": "street.nro",
+      "nro_sha256": "e6464a7fc321964e5ac501c75f1e656d611761fe1189fc939c017e378b9defee",
+      "settings": "street-settings.toml"
+    }
+  ]
+}

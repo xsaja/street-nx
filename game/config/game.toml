@@ -1,0 +1,342 @@
+# Recompiler input for default.xbe, written by xbe_symbols
+
+[xbe]
+path = "assets/default.xbe"
+title = 0x45410072
+entry = 0x15BA1E
+xdk = 5849
+out = "generated/game"
+partitions = 64
+code_sections = [".text", "D3D", "XGRPH", "DSOUND", "XPP"]
+
+# extra entry points
+[functions]
+
+# functions the host replaces or calls by name, 0 where the image has none
+[symbols]
+# Not found by xbe_symbols, identified by hand (see CLAUDE.local.md):
+# stores x/y times the multisample factors at device+0x96C/0x970 (BackBufferScale), then calls 0x250F40, ret 8.
+D3DDevice_SetBackBufferScale = 0x25DC80
+# the twin xbe_symbols left when it took 0x266D5C for SetFilter: same bytes, 0x1C before it, as in MVP
+# (SetEG 0x54A256, SetFilter 0x54A272); its internals touch the APU, which crashed on a null pointer.
+IDirectSoundBuffer_SetEG = 0x266D40
+# between StopEx and SetLoopRegion as MVP's unnamed 0x54A30A; the game calls it with 1 and 0 over its voices
+IDirectSoundBuffer_Pause = 0x266DF4
+# 0x251B80: SetState(0), count + 1, then the push buffer reservation; 0x251BA0 stores the push pointer, ret 4
+D3DDevice_BeginPush = 0x251B80
+D3DDevice_EndPush = 0x251BA0
+# first 32 bytes match MVP's XInputGetCapabilities 0x585BC2 (addresses masked)
+XInputGetCapabilities = 0x270234
+_CIacos                                              = 0x239900
+_CIasin                                              = 0x2399CC
+accept                                               = 0
+bind                                                 = 0
+BinkDoFrame                                          = 0
+BinkGetSummary                                       = 0
+BinkNextFrame                                        = 0
+BinkWait                                             = 0
+CDevice_KickOff                                      = 0x251BB0
+CDirectSoundStream_AddRef                            = 0
+CDirectSoundStream_Discontinuity                     = 0
+CDirectSoundStream_Flush                             = 0
+CDirectSoundStream_FlushEx                           = 0
+CDirectSoundStream_GetInfo                           = 0
+CDirectSoundStream_GetStatus                         = 0
+CDirectSoundStream_Pause                             = 0
+CDirectSoundStream_Process                           = 0
+CDirectSoundStream_Release                           = 0
+CDirectSoundStream_SetFilter                         = 0
+CDirectSoundStream_SetFormat                         = 0
+CDirectSoundStream_SetFrequency                      = 0
+CDirectSoundStream_SetHeadroom                       = 0
+CDirectSoundStream_SetI3DL2Source                    = 0
+CDirectSoundStream_SetMaxDistance                    = 0
+CDirectSoundStream_SetMinDistance                    = 0
+CDirectSoundStream_SetMixBins                        = 0
+CDirectSoundStream_SetMixBinVolumes                  = 0
+CDirectSoundStream_SetPosition                       = 0
+CDirectSoundStream_SetVelocity                       = 0
+CDirectSoundStream_SetVolume                         = 0
+closesocket                                          = 0
+connect                                              = 0
+crt_acos                                             = 0x23991D
+crt_asin                                             = 0x2399E9
+crt_atan                                             = 0
+crt_cos                                              = 0
+crt_log                                              = 0
+crt_log10                                            = 0
+crt_pow                                              = 0x23BBEC
+crt_sin                                              = 0
+crt_sqrt                                             = 0
+crt_tan                                              = 0
+D3D_BlockOnResource                                  = 0x2520C0
+D3D_BlockOnTime                                      = 0x251D90
+D3D_InitDefaultState                                 = 0x255450
+D3D_InternalAddRef                                   = 0x257C20
+D3D_InternalRelease                                  = 0x257E50
+D3D_KickOffAndWaitForIdle                            = 0x2520A0
+D3D_MakeRequestedSpace                               = 0x251F00
+D3D_SetFence                                         = 0x251CD0
+D3DDevice_Begin                                      = 0x25CE60
+D3DDevice_BlockOnFence                               = 0x252C20
+D3DDevice_BlockUntilVerticalBlank                    = 0x252CE0
+D3DDevice_Clear                                      = 0x258D70
+D3DDevice_CopyRects                                  = 0x253280
+D3DDevice_CreatePixelShader                          = 0x25DE50
+D3DDevice_CreateVertexShader                         = 0x254970
+D3DDevice_DeletePixelShader                          = 0x25DEA0
+D3DDevice_DeleteVertexShader                         = 0x254FD0
+D3DDevice_DrawIndexedVertices                        = 0x25CB10
+D3DDevice_DrawVertices                               = 0x25CA70
+D3DDevice_DrawVerticesUP                             = 0
+D3DDevice_EnableOverlay                              = 0
+D3DDevice_End                                        = 0x25CEA0
+D3DDevice_FlushVertexCache                           = 0x253C00
+D3DDevice_GetBackBuffer2                             = 0x253230
+D3DDevice_GetDepthStencilSurface2                    = 0x2535B0
+D3DDevice_GetRenderTarget2                           = 0
+D3DDevice_GetVertexShaderFunction                    = 0
+D3DDevice_InsertFence                                = 0x252E00
+D3DDevice_IsFencePending                             = 0x251AF0
+D3DDevice_LightEnable                                = 0
+D3DDevice_LoadVertexShader                           = 0x254D70
+D3DDevice_MakeSpace                                  = 0x252040
+D3DDevice_PersistDisplay                             = 0x2540A0
+D3DDevice_Release                                    = 0
+D3DDevice_SelectVertexShader                         = 0x254DD0
+D3DDevice_SetFlickerFilter                           = 0x252D50
+D3DDevice_SetGammaRamp                               = 0x252A30
+D3DDevice_SetIndices                                 = 0x253A40
+D3DDevice_SetLight                                   = 0
+D3DDevice_SetMaterial                                = 0
+D3DDevice_SetPalette                                 = 0x2539B0  # by hand: first 40 bytes match MVP's 0x5381B0 (addresses masked)
+D3DDevice_SetPixelShader                             = 0x25DEC0
+D3DDevice_SetPixelShaderConstant                     = 0x25E0C0
+D3DDevice_SetRenderState_BackFillMode                = 0x250790
+D3DDevice_SetRenderState_CullMode                    = 0x250420
+D3DDevice_SetRenderState_DoNotCullUncompressed       = 0x251590
+D3DDevice_SetRenderState_Dxt1NoiseEnable             = 0x2505E0
+D3DDevice_SetRenderState_EdgeAntiAlias               = 0x250350
+D3DDevice_SetRenderState_FillMode                    = 0x250740
+D3DDevice_SetRenderState_FogColor                    = 0x2503D0
+D3DDevice_SetRenderState_FrontFace                   = 0x250490
+D3DDevice_SetRenderState_LineWidth                   = 0x250570
+D3DDevice_SetRenderState_LogicOp                     = 0x2506E0
+D3DDevice_SetRenderState_MultiSampleAntiAlias        = 0x251610
+D3DDevice_SetRenderState_MultiSampleMask             = 0x251690
+D3DDevice_SetRenderState_MultiSampleMode             = 0x2515B0
+D3DDevice_SetRenderState_MultiSampleRenderTargetMode = 0x2515E0
+D3DDevice_SetRenderState_NormalizeNormals            = 0x2504D0
+D3DDevice_SetRenderState_OcclusionCullEnable         = 0x251470
+D3DDevice_SetRenderState_PSTextureModes              = 0x250020
+D3DDevice_SetRenderState_RopZCmpAlwaysRead           = 0x251550
+D3DDevice_SetRenderState_RopZRead                    = 0x251570
+D3DDevice_SetRenderState_SampleAlpha                 = 0x2516E0
+D3DDevice_SetRenderState_ShadowFunc                  = 0x250390
+D3DDevice_SetRenderState_Simple                      = 0x250050
+D3DDevice_SetRenderState_StencilCullEnable           = 0x2514E0
+D3DDevice_SetRenderState_StencilEnable               = 0x251330
+D3DDevice_SetRenderState_StencilFail                 = 0x2513D0
+D3DDevice_SetRenderState_TextureFactor               = 0x250510
+D3DDevice_SetRenderState_TwoSidedLighting            = 0x2507F0
+D3DDevice_SetRenderState_VertexBlend                 = 0x250870
+D3DDevice_SetRenderState_YuvEnable                   = 0x251440
+D3DDevice_SetRenderState_ZEnable                     = 0x2512A0
+D3DDevice_SetRenderStateNotInline                    = 0x250080
+D3DDevice_SetRenderTarget                            = 0x252FB0
+D3DDevice_SetScissors                                = 0x253D20
+D3DDevice_SetScreenSpaceOffset                       = 0x2541D0
+D3DDevice_SetShaderConstantMode                      = 0x254E70
+D3DDevice_SetSoftDisplayFilter                       = 0x252DA0
+D3DDevice_SetStreamSource                            = 0x254CE0
+D3DDevice_SetTexture                                 = 0x253800
+D3DDevice_SetTextureStageStateNotInline              = 0x250AC0
+D3DDevice_SetTextureState_BorderColor                = 0x250A40
+D3DDevice_SetTextureState_BumpEnv                    = 0x2509D0
+D3DDevice_SetTextureState_ColorKeyColor              = 0x250A80
+D3DDevice_SetTextureState_TexCoordIndex              = 0x2508C0
+D3DDevice_SetTile                                    = 0x253D10
+D3DDevice_SetTransform                               = 0x252AF0
+D3DDevice_SetVertexShader                            = 0x2550E0
+D3DDevice_SetVertexShaderConstant1                   = 0x254AB0
+D3DDevice_SetVertexShaderConstant1Fast               = 0
+D3DDevice_SetVertexShaderConstant4                   = 0x254B10
+D3DDevice_SetVertexShaderConstantNotInlineFast       = 0x254BC0
+D3DDevice_SetViewport                                = 0x2535D0
+D3DDevice_Swap                                       = 0x25DB90
+D3DDevice_SwitchTexture                              = 0
+D3DResource_BlockUntilNotBusy                        = 0x257E40
+D3DResource_IsBusy                                   = 0x257D80
+Direct3D_CreateDevice                                = 0x25D080
+DirectSoundCreate                                    = 0x267F48
+DirectSoundCreateBuffer                              = 0x267F8F
+DirectSoundCreateStream                              = 0
+DirectSoundDoWork                                    = 0x266E88
+DirectSoundUseFullHRTF                               = 0
+DirectSoundUseLightHRTF                              = 0
+getsockname                                          = 0
+getsockopt                                           = 0
+IDirectSound_CommitDeferredSettings                  = 0
+IDirectSound_CommitEffectData                        = 0
+IDirectSound_CreateSoundBuffer                       = 0x267D5E
+IDirectSound_DownloadEffectsImage                    = 0x266CCF
+IDirectSound_EnableHeadphones                        = 0
+IDirectSound_GetEffectData                           = 0
+IDirectSound_GetOutputLevels                         = 0
+IDirectSound_GetSpeakerConfig                        = 0
+IDirectSound_Release                                 = 0x2660AB
+IDirectSound_SetDistanceFactor                       = 0
+IDirectSound_SetDopplerFactor                        = 0
+IDirectSound_SetEffectData                           = 0x266CF6
+IDirectSound_SetI3DL2Listener                        = 0x267D82
+IDirectSound_SetMixBinHeadroom                       = 0x266D20
+IDirectSound_SetOrientation                          = 0
+IDirectSound_SetPosition                             = 0
+IDirectSound_SetRolloffFactor                        = 0
+IDirectSound_SetVelocity                             = 0
+IDirectSound_SynchPlayback                           = 0
+IDirectSoundBuffer_GetCurrentPosition                = 0x266E4C
+IDirectSoundBuffer_GetStatus                         = 0x266E30
+IDirectSoundBuffer_Lock                              = 0
+IDirectSoundBuffer_Play                              = 0x266D94
+IDirectSoundBuffer_Release                           = 0x2660C1
+IDirectSoundBuffer_SetAllParameters                  = 0
+IDirectSoundBuffer_SetBufferData                     = 0x2677C8
+IDirectSoundBuffer_SetCurrentPosition                = 0x266E6C
+IDirectSoundBuffer_SetFilter                         = 0x266D5C
+IDirectSoundBuffer_SetFormat                         = 0
+IDirectSoundBuffer_SetFrequency                      = 0x26727A
+IDirectSoundBuffer_SetHeadroom                       = 0
+IDirectSoundBuffer_SetI3DL2Source                    = 0
+IDirectSoundBuffer_SetLoopRegion                     = 0x266E10
+IDirectSoundBuffer_SetMaxDistance                    = 0
+IDirectSoundBuffer_SetMinDistance                    = 0
+IDirectSoundBuffer_SetMixBins                        = 0x267296
+IDirectSoundBuffer_SetMixBinVolumes                  = 0x266D78
+IDirectSoundBuffer_SetOutputBuffer                   = 0
+IDirectSoundBuffer_SetPlayRegion                     = 0
+IDirectSoundBuffer_SetPosition                       = 0
+IDirectSoundBuffer_SetRolloffCurve                   = 0
+IDirectSoundBuffer_SetVelocity                       = 0
+IDirectSoundBuffer_SetVolume                         = 0
+IDirectSoundBuffer_Stop                              = 0x266DB8
+IDirectSoundBuffer_StopEx                            = 0x266DD0
+IDirectSoundBuffer_Unlock                            = 0
+IDirectSoundStream_SetEG                             = 0
+ioctlsocket                                          = 0
+listen                                               = 0
+Lock2DSurface                                        = 0x2587D0
+recv                                                 = 0
+recvfrom                                             = 0
+select                                               = 0
+send                                                 = 0
+sendto                                               = 0
+setsockopt                                           = 0
+shutdown                                             = 0
+socket                                               = 0
+WSACancelOverlappedIO                                = 0
+WSAGetLastError                                      = 0
+WSAGetOverlappedResult                               = 0
+WSARecv                                              = 0
+WSARecvFrom                                          = 0
+WSASend                                              = 0
+WSASendTo                                            = 0
+WSAStartup                                           = 0
+XAudioDownloadEffectsImage                           = 0
+XInitDevices                                         = 0x26F733
+XInputClose                                          = 0x270228
+XInputGetState                                       = 0x27040C
+XInputOpen                                           = 0x2701D2
+XInputSetState                                       = 0x27047F
+XLaunchNewImageA                                     = 0x15B3EB
+XMountUtilityDrive                                   = 0x15DB2F
+XNetCreateKey                                        = 0
+XNetDnsLookup                                        = 0
+XNetDnsRelease                                       = 0
+XNetGetEthernetLinkStatus                            = 0
+XNetGetTitleXnAddr                                   = 0
+XNetInAddrToXnAddr                                   = 0
+XNetRandom                                           = 0
+XNetRegisterKey                                      = 0
+XNetStartup                                          = 0
+XNetUnregisterKey                                    = 0
+XNetXnAddrToInAddr                                   = 0
+XOnlineCleanup                                       = 0
+XOnlineStartup                                       = 0
+
+[data]
+D3D_DeferredTextureState    = 0x260DA0
+D3D_Device                  = 0x261240
+D3D_DirtyFlags              = 0x260D98
+D3D_IndexData               = 0x260D94
+D3D_pDevice                 = 0x261238
+D3D_RenderState             = 0x260FA0
+D3D_SimpleRenderStateEncode = 0x278640
+D3D_Streams                 = 0x2636F8
+DSound_StreamVtable         = 0
+DSound_StreamVtable2        = 0
+XPP_GamepadType             = 0x26F274
+XPP_MemoryUnitType          = 0x26F320
+
+# EA's sound engine guard (0x2FC184) is left by a plain dec at each of these: a release fence first, so the next
+# thread to enter (sub_0022004B, hooks.cpp) sees what the section wrote. 0x220716 is the init's restore of the count.
+[[hook]]
+at = 0x220405
+call = "SoundGuardLeave"
+
+[[hook]]
+at = 0x2205F5
+call = "SoundGuardLeave"
+
+[[hook]]
+at = 0x2206D9
+call = "SoundGuardLeave"
+
+[[hook]]
+at = 0x220716
+call = "SoundGuardLeave"
+
+[[hook]]
+at = 0x220902
+call = "SoundGuardLeave"
+
+[[hook]]
+at = 0x220B45
+call = "SoundGuardLeave"
+
+[[hook]]
+at = 0x220BAC
+call = "SoundGuardLeave"
+
+[[hook]]
+at = 0x220C64
+call = "SoundGuardLeave"
+
+[[hook]]
+at = 0x221558
+call = "SoundGuardLeave"
+
+[[hook]]
+at = 0x221A76
+call = "SoundGuardLeave"
+
+[[hook]]
+at = 0x221B2E
+call = "SoundGuardLeave"
+
+[[hook]]
+at = 0x221BDB
+call = "SoundGuardLeave"
+
+[[hook]]
+at = 0x221C29
+call = "SoundGuardLeave"
+
+[[hook]]
+at = 0x223443
+call = "SoundGuardLeave"
+
+
+# argument locations in API order for functions a link time code generated library compiled with another
+# convention: a register (eax ebx ecx edx esi edi ebp) or "stack" for the next stack slot, which the callee pops
+[abi]

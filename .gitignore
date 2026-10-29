@@ -1,0 +1,31 @@
+# Nothing from the game, nothing built
+default.xbe
+*.xbe
+*.iso
+/game/assets/
+/game/generated/
+nvk_sdk/
+switch_sd/
+/build*/
+out/
+*.nro
+*.nacp
+*.elf
+*.nso
+*.exe
+*.dll
+*.pdb
+*.o
+*.a
+*.rlib
+*.log
+logs/
+screenshots/
+shadercache/
+hdd/
+
+# the NRO icon carries the game's name (a trademark of EA): kept local
+switch/icon.jpg
+
+# private working diary (local paths, test sessions)
+CLAUDE.local.md
